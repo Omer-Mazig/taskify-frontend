@@ -5,17 +5,31 @@ import MainLayout from "./layouts/main-layout";
 import LoginPage from "./pages/login-page";
 import RegisterPage from "./pages/register-page";
 import { useAuth } from "./contexts/auth-context";
+import HomePage from "./pages/home-page";
 
-function ProtectedRoute({ children }) {
+function RequireAuth({ children }) {
   const { loggedInUser } = useAuth();
 
   if (loggedInUser === undefined) {
     return null;
   }
 
-  console.log("loggedInUser", loggedInUser);
   if (loggedInUser === null) {
     return <Navigate to="/auth/login" replace />;
+  }
+
+  return children;
+}
+
+function RequireUnAuth({ children }) {
+  const { loggedInUser } = useAuth();
+
+  if (loggedInUser === undefined) {
+    return null;
+  }
+
+  if (loggedInUser !== null) {
+    return <Navigate to="/task" replace />;
   }
 
   return children;
@@ -25,21 +39,28 @@ function App() {
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <MainLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<div>home</div>} />
+        <Route path="/" element={<MainLayout />}>
+          <Route index element={<HomePage />} />
           <Route path="about" element={<div>about</div>} />
           <Route path="contact" element={<div>contact</div>} />
-          <Route path="task" element={<div>tasks</div>} />
+          <Route
+            path="task"
+            element={
+              <RequireAuth>
+                <div>task</div>
+              </RequireAuth>
+            }
+          />
         </Route>
 
-        <Route path="/auth" element={<AuthLayout />}>
+        <Route
+          path="/auth"
+          element={
+            <RequireUnAuth>
+              <AuthLayout />
+            </RequireUnAuth>
+          }
+        >
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
         </Route>

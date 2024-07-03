@@ -6,7 +6,7 @@ function MainLayout() {
   return (
     <>
       <Header />
-      <div className="px-4">
+      <div className="px-4 max-w-5xl mx-auto">
         <Outlet />
       </div>
     </>

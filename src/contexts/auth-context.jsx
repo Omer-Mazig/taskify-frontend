@@ -22,10 +22,10 @@ export const AuthProvider = ({ children }) => {
         const response = await api.get("/auth/loggedInUser");
         setLoggedInUser(response.data);
       } catch (error) {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           console.error("Invalid token, logging out");
           logout();
-        } else if (error.response.status === 404) {
+        } else if (error.response?.status === 404) {
           console.error("User not found, logging out");
           logout();
         } else {

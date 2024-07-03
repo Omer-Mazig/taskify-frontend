@@ -12,56 +12,65 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const loggedInUser = { username: "baba" };
+import { useAuth } from "@/contexts/auth-context";
+import { LogOut, Settings2 } from "lucide-react";
 
 function Header() {
+  const { loggedInUser, logout } = useAuth();
+
+  function handleLogout() {
+    logout();
+  }
   return (
-    <header className="bg-white/5 px-4 flex justify-between items-center h-14">
-      <div>
-        <Link className="text-primary uppercase font-bold text-xl" to="/">
-          Logo
-        </Link>
-      </div>
-      <nav>
-        <ul className="flex gap-2">
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/contact">Contact</Link>
-          </li>
-          <li>
-            <Link to="/task">Tasks</Link>
-          </li>
-        </ul>
-      </nav>
+    <header className="bg-white/5 h-14 mb-16">
+      <div className="px-4 max-w-5xl mx-auto flex justify-between items-center h-full">
+        <div>
+          <Link className="text-primary uppercase font-bold" to="/">
+            Logo
+          </Link>
+        </div>
+        <nav>
+          <ul className="flex gap-2">
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+            <li>
+              <Link to="/task">Tasks</Link>
+            </li>
+          </ul>
+        </nav>
 
-      <div className="flex items-center gap-1">
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={loggedInUser.imgUrl} />
-              <AvatarFallback>
-                {loggedInUser.username[0].toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link>Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <ModeToggle />
+        <div className="flex items-center gap-1">
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={loggedInUser?.imgUrl} />
+                <AvatarFallback>
+                  {loggedInUser?.firstName[0].toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="cursor-pointer space-x-2"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer space-x-2">
+                <Settings2 className="h-4 w-4" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <ModeToggle />
+        </div>
       </div>
     </header>
   );
