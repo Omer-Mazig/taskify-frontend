@@ -7,6 +7,7 @@ import RegisterPage from "./pages/register-page";
 import { useAuth } from "./contexts/auth-context";
 import HomePage from "./pages/home-page";
 
+// Protected
 function RequireAuth({ children }) {
   const { loggedInUser } = useAuth();
 
@@ -21,6 +22,7 @@ function RequireAuth({ children }) {
   return children;
 }
 
+// home, login ,register
 function RequireUnAuth({ children }) {
   const { loggedInUser } = useAuth();
 
